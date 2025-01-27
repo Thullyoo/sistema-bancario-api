@@ -1,4 +1,4 @@
-package br.thullyoo.sistema_bancario.model.user;
+package br.thullyoo.sistema_bancario.model.transaction;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
