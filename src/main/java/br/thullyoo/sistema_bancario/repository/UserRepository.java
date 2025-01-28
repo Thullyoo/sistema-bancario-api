@@ -30,6 +30,21 @@ public class UserRepository {
                 .update();
     }
 
+    public User getUserById(UUID id) {
+        try {
+            Optional<User> user = jdbcClient
+                    .sql("SELECT * FROM users WHERE uuid = ?")
+                    .param(id)
+                    .query(User.class)
+                    .optional();
 
+            if (user.isEmpty()) {
+                throw new NoSuchElementException("User not found");
+            }
+            return user.get();
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving user", e);
+        }
+    }
 
 }
