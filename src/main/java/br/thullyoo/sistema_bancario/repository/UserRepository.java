@@ -47,4 +47,41 @@ public class UserRepository {
         }
     }
 
+    public User getUserByDocument(String document){
+        try {
+            Optional<User> user = jdbcClient
+                    .sql("SELECT * FROM users WHERE document = ?")
+                    .param(document)
+                    .query(User.class)
+                    .optional();
+
+            if (user.isEmpty()) {
+                throw new NoSuchElementException("User not found");
+            }
+            return user.get();
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving user", e);
+        }
+    }
+
+    public void updateUser(User user) {
+        jdbcClient.sql("""
+            UPDATE USERS
+            SET name = :name,
+                email = :email,
+                password = :password,
+                document = :document,
+                balance = :balance
+            WHERE uuid = :id
+            """)
+                .param("uuid", user.getUuid())
+                .param("name", user.getName())
+                .param("email", user.getEmail())
+                .param("password", user.getPassword())
+                .param("document", user.getDocument())
+                .param("balance", user.getBalance())
+                .update();
+    }
+
+
 }
