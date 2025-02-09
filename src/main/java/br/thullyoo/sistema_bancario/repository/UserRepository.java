@@ -74,7 +74,7 @@ public class UserRepository {
                 balance = :balance
             WHERE uuid = :id
             """)
-                .param("uuid", user.getUuid())
+                .param("id", user.getUuid())
                 .param("name", user.getName())
                 .param("email", user.getEmail())
                 .param("password", user.getPassword())
