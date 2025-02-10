@@ -1,20 +1,19 @@
 package br.thullyoo.sistema_bancario.model.transaction;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
+import jakarta.validation.constraints.*;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @DynamoDbBean
 public class Transaction {
 
-    private Long id;
+    private UUID id;
 
     @NotNull(message = "Issued date cannot be null")
     private LocalDateTime issuedAt;
@@ -31,16 +30,25 @@ public class Transaction {
     @DecimalMin(value = "0.01", message = "Value must be greater than zero")
     private BigDecimal value;
 
-    public Transaction() {
+    public Transaction(LocalDateTime issuedAt, String documentSender, String documentReceiver, BigDecimal value) {
+        this.id = UUID.randomUUID();
+        this.issuedAt = issuedAt;
+        this.documentSender = documentSender;
+        this.documentReceiver = documentReceiver;
+        this.value = value;
     }
 
-    @DynamoDbAttribute("transaction_id")
+    public Transaction() {
+        this.id = UUID.randomUUID();
+    }
+
     @DynamoDbPartitionKey
-    public Long getId() {
+    @DynamoDbAttribute("transaction_id")
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
