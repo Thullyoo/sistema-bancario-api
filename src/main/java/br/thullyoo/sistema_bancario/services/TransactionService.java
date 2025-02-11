@@ -8,8 +8,13 @@ import io.awspring.cloud.dynamodb.DynamoDbTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import software.amazon.awssdk.core.pagination.sync.SdkIterable;
+import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
+import software.amazon.awssdk.services.dynamodb.model.ScanRequest;
+import software.amazon.awssdk.services.dynamodb.model.ScanResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class TransactionService {
@@ -45,5 +50,12 @@ public class TransactionService {
 
         return dynamoDbTemplate.save(transaction);
     }
+    
+    public List<Transaction> getAllTransactions(){
+       SdkIterable<Transaction> transactions = dynamoDbTemplate.scan(ScanEnhancedRequest.builder().build(), Transaction.class).items();
 
+       List<Transaction> transactionList = transactions.stream().toList();
+
+       return transactionList;
+    }
 }
