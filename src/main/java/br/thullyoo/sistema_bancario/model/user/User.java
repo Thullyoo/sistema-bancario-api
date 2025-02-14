@@ -1,6 +1,7 @@
 package br.thullyoo.sistema_bancario.model.user;
 
 import jakarta.validation.constraints.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -31,8 +32,6 @@ public class User {
 
     public User() {
     }
-
-
 
     public UUID getUuid() {
         return uuid;
@@ -80,5 +79,20 @@ public class User {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uuid=" + uuid +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", balance=" + balance +
+                ", document='" + document + '\'' +
+                '}';
+    }
+
+    public boolean isPasswordCorrect(String password, PasswordEncoder passwordEncoder){
+        return passwordEncoder.matches(password, getPassword());
     }
 }
