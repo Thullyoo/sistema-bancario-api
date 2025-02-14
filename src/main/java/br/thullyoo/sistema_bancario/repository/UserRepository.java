@@ -4,6 +4,7 @@ import br.thullyoo.sistema_bancario.model.user.User;
 import br.thullyoo.sistema_bancario.model.user.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -17,6 +18,9 @@ public class UserRepository {
     @Autowired
     private JdbcClient jdbcClient;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     public void register(UserRequest userRequest){
         jdbcClient.sql("""
                 INSERT INTO USERS (name, email, password, balance, document)
@@ -24,7 +28,7 @@ public class UserRepository {
                 """)
                 .param("name", userRequest.name())
                 .param("email", userRequest.email())
-                .param("password", userRequest.password())
+                .param("password", passwordEncoder.encode(userRequest.password()))
                 .param("balance", new BigDecimal(0))
                 .param("document", userRequest.document())
                 .update();
@@ -77,7 +81,7 @@ public class UserRepository {
                 .param("id", user.getUuid())
                 .param("name", user.getName())
                 .param("email", user.getEmail())
-                .param("password", user.getPassword())
+                .param("password", passwordEncoder.encode(user.getPassword()))
                 .param("document", user.getDocument())
                 .param("balance", user.getBalance())
                 .update();
