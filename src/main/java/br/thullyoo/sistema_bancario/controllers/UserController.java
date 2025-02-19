@@ -1,14 +1,13 @@
 package br.thullyoo.sistema_bancario.controllers;
 
-import br.thullyoo.sistema_bancario.model.user.IncrementRequest;
-import br.thullyoo.sistema_bancario.model.user.User;
-import br.thullyoo.sistema_bancario.model.user.UserRequest;
+import br.thullyoo.sistema_bancario.model.user.*;
 import br.thullyoo.sistema_bancario.repository.UserRepository;
 import br.thullyoo.sistema_bancario.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -24,6 +23,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody @Valid LoginRequest loginRequest){
+        try {
+            return ResponseEntity.ok().body(userService.login(loginRequest));
+        }catch (BadCredentialsException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Void> registerUser(@RequestBody @Valid UserRequest userRequest){
