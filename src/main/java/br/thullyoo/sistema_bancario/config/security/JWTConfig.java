@@ -18,10 +18,10 @@ import java.security.interfaces.RSAPublicKey;
 @Configuration
 public class JWTConfig {
 
-    @Value("{public_key}")
+    @Value("${public.key}")
     private RSAPublicKey publicKey;
 
-    @Value("{private_key}")
+    @Value("${private.key}")
     private RSAPrivateKey privateKey;
 
     @Bean
