@@ -28,8 +28,8 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.OK).body(transactionService.getAllTransactions());
     }
 
-    @GetMapping("/{document}")
-    public ResponseEntity<List<Transaction>> getAllTransactionsByDocument(@PathVariable("document") String document){
-        return ResponseEntity.status(HttpStatus.OK).body(transactionService.getAllTransactionsByDocument(document));
+    @GetMapping("/user")
+    public ResponseEntity<List<Transaction>> getAllTransactionsByUser(){
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.getAllTransactionsByUser());
     }
 }
