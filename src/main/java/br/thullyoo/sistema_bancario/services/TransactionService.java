@@ -1,5 +1,6 @@
 package br.thullyoo.sistema_bancario.services;
 
+import br.thullyoo.sistema_bancario.config.security.JWTService;
 import br.thullyoo.sistema_bancario.model.transaction.Transaction;
 import br.thullyoo.sistema_bancario.model.transaction.TransactionRequest;
 import br.thullyoo.sistema_bancario.model.user.User;
@@ -17,6 +18,7 @@ import software.amazon.awssdk.services.dynamodb.model.ScanResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +32,10 @@ public class TransactionService {
 
     @Transactional
     public Transaction register(TransactionRequest request){
-        User sender = userRepository.getUserByDocument(request.documentSender());
+
+        String uuid = JWTService.getUserFromToken();
+
+        User sender = userRepository.getUserById(UUID.fromString(uuid));
         User receiver = userRepository.getUserByDocument(request.documentReceiver());
 
         if (sender.getBalance().compareTo(request.value()) < 0){
