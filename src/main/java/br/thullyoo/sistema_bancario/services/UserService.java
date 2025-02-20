@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -23,9 +24,11 @@ public class UserService {
     }
 
     @Transactional
-    public void incrementBalance(BigDecimal value, String document){
-        User user = userRepository.getUserByDocument(document);
-        System.out.println(user.toString());
+    public void incrementBalance(BigDecimal value){
+
+        String uuid = JWTService.getUserFromToken();
+
+        User user = userRepository.getUserById(UUID.fromString(uuid));
         user.setBalance(user.getBalance().add(value));
         userRepository.updateUser(user);
     }
