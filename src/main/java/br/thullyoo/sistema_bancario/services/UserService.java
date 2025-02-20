@@ -1,5 +1,6 @@
 package br.thullyoo.sistema_bancario.services;
 
+import br.thullyoo.sistema_bancario.config.security.JWTService;
 import br.thullyoo.sistema_bancario.model.user.LoginRequest;
 import br.thullyoo.sistema_bancario.model.user.LoginResponse;
 import br.thullyoo.sistema_bancario.model.user.User;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Service
 public class UserService {

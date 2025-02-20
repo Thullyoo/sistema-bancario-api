@@ -1,4 +1,4 @@
-package br.thullyoo.sistema_bancario.services;
+package br.thullyoo.sistema_bancario.config.security;
 
 import br.thullyoo.sistema_bancario.model.user.LoginRequest;
 import br.thullyoo.sistema_bancario.model.user.LoginResponse;
