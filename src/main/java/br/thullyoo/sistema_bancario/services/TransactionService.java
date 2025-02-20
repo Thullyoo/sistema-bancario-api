@@ -7,6 +7,7 @@ import br.thullyoo.sistema_bancario.model.user.User;
 import br.thullyoo.sistema_bancario.repository.UserRepository;
 import io.awspring.cloud.dynamodb.DynamoDbTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.core.pagination.sync.SdkIterable;
@@ -67,11 +68,12 @@ public class TransactionService {
        return transactionList;
     }
 
-    public List<Transaction> getAllTransactionsByDocument(String document){
+    public List<Transaction> getAllTransactionsByUser(){
+        String uuid = JWTService.getUserFromToken();
         List<Transaction> transactions  = dynamoDbTemplate.scan(ScanEnhancedRequest.builder().build(), Transaction.class)
                 .items()
                 .stream()
-                .filter(t -> t.getDocumentSender().equals(document))
+                .filter(t -> t.getId().equals(UUID.fromString(uuid)))
                 .collect(Collectors.toList());
 
         return transactions;
