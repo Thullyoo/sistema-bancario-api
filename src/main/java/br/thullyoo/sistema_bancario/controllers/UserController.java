@@ -54,9 +54,9 @@ public class UserController {
     }
 
     @PostMapping("/increment")
-    public ResponseEntity<Void> incrementBalance(@RequestParam String document, @RequestBody IncrementRequest request){
+    public ResponseEntity<Void> incrementBalance(@RequestBody IncrementRequest request){
         try{
-            userService.incrementBalance(request.value(), document);
+            userService.incrementBalance(request.value());
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
             System.out.println(e.getMessage());
