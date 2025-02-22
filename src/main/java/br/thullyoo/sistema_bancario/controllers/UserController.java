@@ -49,7 +49,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized to access this resource"),
     })
     @PostMapping(value = "/increment", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<Void> incrementBalance(@RequestBody IncrementRequest request) {
+    public ResponseEntity<Void> incrementBalance(@RequestBody @Valid IncrementRequest request) {
         userService.incrementBalance(request.value());
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
